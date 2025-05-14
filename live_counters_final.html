@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Counters</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #2f2f2f;
+      color: white;
+      margin: 0;
+      padding: 30px;
+      line-height: 1.8em;
+    }
+    .flex-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .counters-wrapper {
+      flex: 1;
+      padding-right: 40px;
+    }
+    .image-wrapper {
+      flex: 0 0 35%;
+      text-align: center;
+    }
+    .image-wrapper img {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    .image-caption {
+      margin-bottom: 10px;
+      font-size: 1.4em;
+      font-weight: bold;
+      color: white;
+      text-align: center;
+      margin-top: 15px;
+      font-size: 1.4em;
+      font-weight: bold;
+      color: white;
+    }
+    .counter-line {
+      font-size: 1.2em;
+      margin: 15px 0;
+    }
+    .counter-value {
+      font-weight: bold;
+    }
+    .section-header {
+      margin-top: 40px;
+      font-size: 1.4em;
+      font-weight: bold;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Since Jack and Simran started dating...</h1>
+  <div class="flex-container">
+    <div class="counters-wrapper">
+    <div class='counter-line'>The Earth has revolved around the Sun <span id='earths_revolutions' class='counter-value' style='color:#00cec9'>0</span> times.</div>
+    <div class='section-header'>That's a lot of time! In just that time...</div>
+    <div class='counter-line'><span id='kitkats_sold' class='counter-value' style='color:#e60012'>0</span> KitKats have been sold.</div>
+    <div class='counter-line'><span id='humans_born' class='counter-value' style='color:#00b894'>0</span> humans were born.</div>
+    <div class='counter-line'><span id='books_published' class='counter-value' style='color:#de5d83'>0</span> books were published.</div>
+    <div class='counter-line'>Wikipedia has been edited <span id='wikipedia_edits' class='counter-value' style='color:#88a3e8'>0</span> times.</div>
+    <div class='counter-line'>The Earth has traveled <span id='distance_earth_travels' class='counter-value' style='color:#7a364d'>0</span> miles through space.</div>
+    <div class='section-header'>But it's also a tiny drop of what's possible. In all that time...</div>
+    <div class='counter-line'>Our tectonic plate has moved <span id='tectonic_plate_movement' class='counter-value' style='color:#8f664a'>0</span> centimeters.</div>
+    <div class='counter-line'>There have been <span id='full_moons' class='counter-value' style='color:#f9e4ad'>0</span> full moons.</div>
+    <div class='counter-line'><span id='stars_born' class='counter-value' style='color:#f1c40f'>0</span> stars were born in the Milky Way galaxy.</div>
+    <div class='counter-line'>Taco Bell has opened in <span id='new_taco_bell_locations' class='counter-value' style='color:#6a3d9f'>0</span> new locations.</div>
+    <div class='counter-line'>The International Court of Justice has solved <span id='icj_cases' class='counter-value' style='color:#6c5ce7'>0</span> cases.</div>
+
+    </div>
+    <div class="image-wrapper">
+      <div class="image-caption">Happy 5 Year Anniversary! That's 1826 days!</div>
+      <img src="5year_gift_version7.png" alt="Anniversary Image">
+    </div>
+  </div>
+  <script>
+    const startTime = new Date('May 19, 2020 16:00:00').getTime();
+    const counters = [
+      {
+        id: "earths_revolutions",
+        ratePerSecond: 3.168895543981481e-08,
+        decimals: 10
+      },
+      {
+        id: "kitkats_sold",
+        ratePerSecond: 539.066463723998,
+        decimals: 0
+      },
+      {
+        id: "humans_born",
+        ratePerSecond: 4.248795027904617,
+        decimals: 0
+      },
+      {
+        id: "books_published",
+        ratePerSecond: 0.06976154236428209,
+        decimals: 0
+      },
+      {
+        id: "wikipedia_edits",
+        ratePerSecond: 1.9,
+        decimals: 0
+      },
+      {
+        id: "distance_earth_travels",
+        ratePerSecond: 186.4535768645358,
+        decimals: 0
+      },
+      {
+        id: "tectonic_plate_movement",
+        ratePerSecond: 7.293252156265854e-08,
+        decimals: 10
+      },
+      {
+        id: "full_moons",
+        ratePerSecond: 3.919429085648149e-07,
+        decimals: 10
+      },
+      {
+        id: "stars_born",
+        ratePerSecond: 2.061136478944698e-07,
+        decimals: 10
+      },
+      {
+        id: "new_taco_bell_locations",
+        ratePerSecond: 1.100329781836631e-05,
+        decimals: 10
+      },
+      {
+        id: "icj_cases",
+        ratePerSecond: 8.561643835616439e-08,
+        decimals: 10
+      },
+    ];
+
+    function updateCounters() {
+      const now = Date.now();
+      const elapsed = (now - startTime) / 1000;
+
+      counters.forEach(counter => {
+        const raw = elapsed * counter.ratePerSecond;
+        const val = counter.decimals > 0
+          ? raw.toLocaleString(undefined, { minimumFractionDigits: counter.decimals, maximumFractionDigits: counter.decimals })
+          : Math.floor(raw).toLocaleString();
+        const el = document.getElementById(counter.id);
+        if (el) el.textContent = val;
+      });
+    }
+
+    updateCounters();
+    setInterval(updateCounters, 100);
+  </script>
+</body>
+</html>
